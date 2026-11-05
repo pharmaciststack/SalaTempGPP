@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b8541">
+  <title>ระบบติดตามอุณหภูมิยา GPP - บริษัท ศาลาโอสถรีเทล จำกัด</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div id="boot" class="screen"><div class="spinner" role="status" aria-label="กำลังโหลด"></div></div>
+
+  <section id="login-screen" class="screen hidden">
+    <div class="auth-card">
+      <img src="logo.png" alt="ศาลาโอสถ">
+      <h1>ติดตามอุณหภูมิยา (GPP)</h1>
+      <p>บันทึกและแจ้งเตือนอุณหภูมิห้องเก็บยาและตู้เย็นยาทุกสาขา</p>
+      <div class="stack">
+        <div id="g-btn"></div>
+        <div id="mock-login" class="stack hidden">
+          <button class="btn btn-primary" onclick="mockLogin('admin')">เข้าสู่ระบบทดสอบ: แอดมิน</button>
+          <button class="btn btn-secondary" onclick="mockLogin('staff')">เข้าสู่ระบบทดสอบ: พนักงานสาขา 05</button>
+        </div>
+        <div id="login-checking" class="hidden"><div class="spinner"></div></div>
+      </div>
+      <div id="login-msg" class="msg hidden"></div>
+    </div>
+  </section>
+
+  <section id="register-screen" class="screen hidden">
+    <div class="auth-card">
+      <img src="logo.png" alt="">
+      <h1>ลงทะเบียนผู้ใช้</h1>
+      <p id="reg-email"></p>
+      <label class="label" for="reg-branch" style="text-align:left">สาขาที่ประจำ</label>
+      <select id="reg-branch" class="field"></select>
+      <div id="reg-err" class="err hidden"></div>
+      <div class="row" style="justify-content:center;margin-top:16px">
+        <button class="btn btn-ghost" onclick="signOut(true)">ยกเลิก</button>
+        <button class="btn btn-primary" onclick="submitRegistration(this)">ลงทะเบียน</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="pending-screen" class="screen hidden">
+    <div class="auth-card">
+      <img src="logo.png" alt="">
+      <h1>รอการอนุมัติ</h1>
+      <p>บัญชี <b id="pending-email"></b> ลงทะเบียนแล้ว กรุณารอแอดมินอนุมัติ</p>
+      <div class="row" style="justify-content:center">
+        <button class="btn btn-ghost" onclick="signOut(true)">ออกจากระบบ</button>
+        <button class="btn btn-primary" onclick="recheck(this)">ตรวจสอบอีกครั้ง</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <div class="topbar-in">
+        <img src="logo.png" alt="">
+        <div class="brand">
+          <b>อุณหภูมิยา GPP</b>
+          <span id="sub-status">กำลังโหลด…</span>
+        </div>
+        <button class="btn btn-ghost btn-icon" onclick="refreshNow(this)" title="รีเฟรช" aria-label="รีเฟรช" data-icon="refresh"></button>
+        <button class="user-chip" onclick="userMenu()" aria-label="บัญชีผู้ใช้">
+          <span class="name" id="user-name"></span>
+          <span class="avatar" id="user-avatar"></span>
+        </button>
+      </div>
+      <nav class="tabs" id="tabs" role="tablist"></nav>
+    </header>
+    <div id="mock-banner" class="banner hidden">
+      โหมดทดสอบ — เครื่องวัดจำลอง ข้อมูลเก็บในเบราว์เซอร์นี้ · LINE/อีเมลไม่ได้ส่งจริง (ดูที่ ตั้งค่า &gt; บันทึกการแจ้งเตือน)
+      · <a href="#" onclick="mockReset();return false">ล้างข้อมูลทดสอบ</a>
+    </div>
+    <main id="view"></main>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root" aria-live="polite"></div>
+  <div id="print-area"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
